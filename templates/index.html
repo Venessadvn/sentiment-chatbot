@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Chatbot</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+        <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </div>
+
+    <div class="container">
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" fill="url(#gradient1)"/>
+                        <path d="M14 18C14 17.4477 14.4477 17 15 17C15.5523 17 16 17.4477 16 18C16 18.5523 15.5523 19 15 19C14.4477 19 14 18.5523 14 18Z" fill="white"/>
+                        <path d="M24 18C24 17.4477 24.4477 17 25 17C25.5523 17 26 17.4477 26 18C26 18.5523 25.5523 19 25 19C24.4477 19 24 18.5523 24 18Z" fill="white"/>
+                        <path d="M14 25C14 25 16 28 20 28C24 28 26 25 26 25" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="gradient1" x1="0" y1="0" x2="40" y2="40">
+                                <stop offset="0%" stop-color="#667eea"/>
+                                <stop offset="100%" stop-color="#764ba2"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>Sentiment Chatbot</h1>
+                    <p>AI-powered emotional intelligence</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <div class="chat-panel">
+                <div class="chat-card">
+                    <div class="chat-header">
+                        <div class="status-dot"></div>
+                        <span>Active Chat</span>
+                    </div>
+                    
+                    <div id="chat-box" class="chat-messages">
+                        <div class="welcome-message">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                <circle cx="24" cy="24" r="22" fill="url(#gradient2)"/>
+                                <path d="M18 22C18 21.4477 18.4477 21 19 21C19.5523 21 20 21.4477 20 22C20 22.5523 19.5523 23 19 23C18.4477 23 18 22.5523 18 22Z" fill="white"/>
+                                <path d="M28 22C28 21.4477 28.4477 21 29 21C29.5523 21 30 21.4477 30 22C30 22.5523 29.5523 23 29 23C28.4477 23 28 22.5523 28 22Z" fill="white"/>
+                                <path d="M18 29C18 29 20 32 24 32C28 32 30 29 30 29" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                                <defs>
+                                    <linearGradient id="gradient2" x1="0" y1="0" x2="48" y2="48">
+                                        <stop offset="0%" stop-color="#667eea"/>
+                                        <stop offset="100%" stop-color="#764ba2"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <h3>Welcome! 👋</h3>
+                            <p>Start chatting to analyze sentiment in real-time</p>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-area">
+                        <div class="input-wrapper">
+                            <input 
+                                id="user-input" 
+                                type="text" 
+                                placeholder="Type your message..." 
+                                onkeydown="if(event.key === 'Enter' && !event.shiftKey){event.preventDefault(); sendMessage()}"
+                            >
+                            <button onclick="sendMessage()" class="send-btn" title="Send message">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analytics-panel">
+                <div class="analytics-card">
+                    <div class="card-header">
+                        <h3>📊 Sentiment Analysis</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="mood-indicator">
+                            <div class="mood-icon">😊</div>
+                            <div id="mood-summary" class="mood-text">Start chatting to see analysis</div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <img id="sentiment-plot" src="/plot_sentiment.png" alt="Sentiment timeline"/>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">💬</div>
+                                <div class="stat-value" id="message-count">0</div>
+                                <div class="stat-label">Messages</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">😊</div>
+                                <div class="stat-value" id="positive-count">0</div>
+                                <div class="stat-label">Positive</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">😐</div>
+                                <div class="stat-value" id="neutral-count">0</div>
+                                <div class="stat-label">Neutral</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">😔</div>
+                                <div class="stat-value" id="negative-count">0</div>
+                                <div class="stat-label">Negative</div>
+                            </div>
+                        </div>
+
+                        <a href="/download_report" class="download-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download Full Report
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+let messageCount = 0;
+let sentimentCounts = { positive: 0, neutral: 0, negative: 0 };
+
+function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+}
+
+// Load theme preference
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+}
+
+async function sendMessage(){
+    const input = document.getElementById("user-input");
+    const text = input.value.trim();
+    if(!text) return;
+    
+    appendMessage("You", text, "user");
+    input.value = "";
+    input.focus();
+
+    // Show typing indicator
+    const typingId = showTypingIndicator();
+
+    try {
+        const res = await fetch("/chat", {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({message: text})
+        });
+        const data = await res.json();
+
+        removeTypingIndicator(typingId);
+        
+        appendMessage("Bot", data.reply, "bot", {
+            sentiment: data.sentiment,
+            emotion: data.emotion,
+            confidence: data.confidence
+        });
+
+        // Update stats
+        messageCount++;
+        updateSentimentCount(data.sentiment);
+        updateStats();
+
+        // Update plot image
+        const img = document.getElementById("sentiment-plot");
+        img.src = "/plot_sentiment.png?ts=" + Date.now();
+
+        // Update mood summary with emoji
+        updateMoodSummary(data.mood_summary, data.sentiment);
+    } catch (error) {
+        removeTypingIndicator(typingId);
+        console.error("Error:", error);
+    }
+}
+
+function showTypingIndicator() {
+    const box = document.getElementById("chat-box");
+    const el = document.createElement("div");
+    const id = "typing-" + Date.now();
+    el.id = id;
+    el.className = "message bot typing-indicator";
+    el.innerHTML = `
+        <div class="message-avatar bot-avatar">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="14" fill="url(#gradient3)"/>
+                <defs>
+                    <linearGradient id="gradient3" x1="0" y1="0" x2="32" y2="32">
+                        <stop offset="0%" stop-color="#667eea"/>
+                        <stop offset="100%" stop-color="#764ba2"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        <div class="message-content">
+            <div class="typing-dots">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    `;
+    box.appendChild(el);
+    box.scrollTop = box.scrollHeight;
+    return id;
+}
+
+function removeTypingIndicator(id) {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+}
+
+function appendMessage(who, text, cls, meta){
+    const box = document.getElementById("chat-box");
+    
+    // Remove welcome message if exists
+    const welcome = box.querySelector('.welcome-message');
+    if (welcome) welcome.remove();
+    
+    const el = document.createElement("div");
+    el.className = "message " + cls;
+    
+    const avatar = cls === "user" ? `
+        <div class="message-avatar user-avatar">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="20" fill="#667eea"/>
+                <path d="M20 20c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2.5c-3.34 0-10 1.68-10 5v2.5h20v-2.5c0-3.32-6.66-5-10-5z" fill="white"/>
+            </svg>
+        </div>
+    ` : `
+        <div class="message-avatar bot-avatar">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="20" fill="url(#gradient4)"/>
+                <path d="M20 12c-4.41 0-8 3.59-8 8v4c0 1.1.9 2 2 2h1v-6c0-2.76 2.24-5 5-5s5 2.24 5 5v6h1c1.1 0 2-.9 2-2v-4c0-4.41-3.59-8-8-8z" fill="white"/>
+                <circle cx="17" cy="19" r="1.5" fill="white"/>
+                <circle cx="23" cy="19" r="1.5" fill="white"/>
+                <path d="M16 23c0 2.21 1.79 4 4 4s4-1.79 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                <defs>
+                    <linearGradient id="gradient4" x1="0" y1="0" x2="40" y2="40">
+                        <stop offset="0%" stop-color="#667eea"/>
+                        <stop offset="100%" stop-color="#764ba2"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+    `;
+    
+    let nameLabel = "";
+    let metaHtml = "";
+    
+    if (cls === "user") {
+        nameLabel = `<div class="message-name">You</div>`;
+    } else {
+        nameLabel = `<div class="message-name">Bot</div>`;
+    }
+    
+    if (meta) {
+        metaHtml = `
+            <div class="message-meta">
+                <span class="sentiment-badge ${meta.sentiment.toLowerCase()}">${meta.sentiment}</span>
+                <span class="sentiment-badge neutral">${meta.emotion}</span>
+                <span class="sentiment-badge neutral">${meta.confidence}</span>
+            </div>
+        `;
+    }
+    
+    el.innerHTML = `
+        ${avatar}
+        <div class="message-wrapper">
+            ${nameLabel}
+            <div class="message-content">
+                <div class="message-text">${text}</div>
+            </div>
+            ${metaHtml}
+        </div>
+    `;
+    
+    box.appendChild(el);
+    
+    // Smooth scroll with animation
+    setTimeout(() => {
+        box.scrollTo({
+            top: box.scrollHeight,
+            behavior: 'smooth'
+        });
+    }, 100);
+}
+
+function getSentimentEmoji(sentiment) {
+    const s = sentiment.toLowerCase();
+    if (s.includes('positive')) return '😊';
+    if (s.includes('negative')) return '😔';
+    return '😐';
+}
+
+function updateMoodSummary(summary, sentiment) {
+    const moodText = document.getElementById("mood-summary");
+    const moodIcon = document.querySelector(".mood-icon");
+    
+    moodText.textContent = summary;
+    moodIcon.textContent = getSentimentEmoji(sentiment);
+}
+
+function updateSentimentCount(sentiment) {
+    const s = sentiment.toLowerCase();
+    if (s.includes('positive')) sentimentCounts.positive++;
+    else if (s.includes('negative')) sentimentCounts.negative++;
+    else sentimentCounts.neutral++;
+}
+
+function updateStats() {
+    document.getElementById("message-count").textContent = messageCount;
+    document.getElementById("positive-count").textContent = sentimentCounts.positive;
+    document.getElementById("neutral-count").textContent = sentimentCounts.neutral;
+    document.getElementById("negative-count").textContent = sentimentCounts.negative;
+}
+
+// On load get current mood + plot
+window.addEventListener("load", async ()=>{
+    try {
+        const res = await fetch("/mood");
+        const data = await res.json();
+        updateMoodSummary(data.mood_summary, "Neutral");
+        document.getElementById("sentiment-plot").src = "/plot_sentiment.png?ts=" + Date.now();
+    } catch (error) {
+        console.error("Error loading initial data:", error);
+    }
+});
+
+// Focus input on load
+document.getElementById("user-input").focus();
+</script>
+</body>
+</html>
