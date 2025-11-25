@@ -1,6 +1,19 @@
-venv/
+# Python
 __pycache__/
-hf_cache/
 *.pyc
 *.pyo
+
+# Virtual Environment
+venv/
+
+# HuggingFace Cache
+hf_cache/
+~/.cache/
+*.safetensors
+
+# Torch binaries
+*.dll
+
+# Model folders
 model/
+models/
