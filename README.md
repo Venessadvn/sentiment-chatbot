@@ -69,23 +69,17 @@ One-click export includes:
 
 ## 📂 Project Structure
 
+```text
 sentiment-chatbot/
-
 │── app.py
-
 │── requirements.txt
-
 │── templates/
-
-│ └── index.html
-
+│   └── index.html
 │── static/
-
-│ ├── style.css
-
-│ └── (icons, images)
-
+│   ├── style.css
+│   └── (icons, images)
 │── README.md
+```
 
 
 ---
@@ -275,3 +269,5 @@ Sreya Dhar
 Developer • AI Enthusiast
 
 GitHub: https://github.com/Venessadvn
+
+Linked In: www.linkedin.com/in/sreya-dhar-b790a2282
